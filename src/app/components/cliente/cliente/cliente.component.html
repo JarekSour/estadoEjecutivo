@@ -1,0 +1,431 @@
+<app-nav></app-nav>
+
+<section class="margin-top-80">
+    <div class="row" style="justify-content: center;">
+        <div class="my-tab" (click)="tab = 1" [ngClass]="tab == 1 ? 'my-tab-active':''">
+            <div>
+                <mat-icon>attach_money</mat-icon>
+                <span>EVALUACIÓN</span>
+            </div>
+        </div>
+        <div class="my-tab" (click)="tab = 2" [ngClass]="tab == 2 ? 'my-tab-active':''">
+            <div>
+                <mat-icon>business</mat-icon>
+                <span>DATOS DE EMPRESA</span>
+            </div>
+        </div>
+        <div class="my-tab" (click)="tab = 3" [ngClass]="tab == 3 ? 'my-tab-active':''">
+            <div>
+                <mat-icon>account_circle</mat-icon>
+                <span>REPRESENTANTE LEGAL</span>
+            </div>
+        </div>
+        <div class="my-tab" (click)="tab = 4" [ngClass]="tab == 4 ? 'my-tab-active':''">
+            <div>
+                <mat-icon>verified_user</mat-icon>
+                <span>SOCIOS</span>
+            </div>
+        </div>
+        <div class="my-tab" (click)="tab = 5" [ngClass]="tab == 5 ? 'my-tab-active':''">
+            <div>
+                <mat-icon>insert_drive_file</mat-icon>
+                <span>DOCUMENTACIÓN</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container margin-top-20 margin-bottom-20">
+        <div class="row" *ngIf="tab == 1">
+            <div *ngIf="ofertaFinalizada" class="row input-full-width">
+                <div class="col-md-10 offset-md-1">
+                    <div class="card input-full-width">
+                        <div class="row margin-top-20">
+                            <div class="col-md-6">
+                                <h5 class="my-orange" style="font-weight: 700">Descripción del producto</h5>
+                                <p class="my-orange" style="font-weight: 400;margin: 0;">Garantía:
+                                    <span class="my-gray">{{jsonOferta.garantia}}</span>
+                                </p>
+                                <p class="my-orange" style="font-weight: 400;margin: 0;">Comisión:
+                                    <span class="my-gray">{{jsonOferta.comision}}</span>
+                                </p>
+                                <p class="my-orange" style="font-weight: 400;margin: 0;">Fecha de primer pago:
+                                    <span class="my-gray">{{today | date:'dd/MM/yyyy'}}</span>
+                                </p>
+                                <p class="my-orange" style="font-weight: 400;margin: 0;">Fecha de vencimiento:
+                                    <span class="my-gray">{{vence | date:'dd/MM/yyyy'}}</span>
+                                </p>
+                                <p class="my-orange" style="font-weight: 400;margin: 0;">Fecha último pago ({{jsonOferta.cuota}} cuota):
+                                    <span class="my-gray">{{ultimo | date:'dd/MM/yyyy'}}</span>
+                                </p>
+                                <p class="my-orange" style="font-weight: 400;margin: 0;">Motivo:
+                                    <span class="my-gray">{{jsonOferta.motivo}}</span>
+                                </p>
+                                <p class="my-orange" style="font-weight: 400;margin: 0;">Objetivo:
+                                    <span class="my-gray">{{jsonOferta.objetivo}}</span>
+                                </p>
+                                <p class="my-orange" style="font-weight: 400;margin: 0;">Monto Total:
+                                    <span class="my-gray">{{formatNumber(jsonOferta.rango)}}</span>
+                                </p>
+                                <p class="my-orange" style="font-weight: 400;margin: 0;">Número de cuotas:
+                                    <span class="my-gray">{{jsonOferta.cuota}}</span>
+                                </p>
+                                <p class="my-orange" style="font-weight: 400;margin: 0;">Valor de cuotas:
+                                    <span class="my-gray">{{jsonOferta.valorcuota}}</span>
+                                </p>
+                                <p class="my-orange" style="font-weight: 400;">Valor de la garantía:
+                                    <span class="my-gray">{{jsonOferta.valorgarantia}}</span>
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <mat-form-field class="input-full-width">
+                                        <textarea matInput placeholder="Observaciòn de la operaciòn con el cliente" rows="10"></textarea>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-12 text-center margin-top-20">
+                                    <button mat-button class="btn btn-green-fill btn-sm">Aprobar</button>
+                                    <button mat-button class="btn btn-red-fill btn-sm">Agendar visita técnica</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row margin-bottom-20">
+                            <div class="col-md-12 text-center">
+                                <button mat-button (click)="downloadTabla()" class="btn btn-gray-fill btn-sm">Descargar tabla de pago</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!ofertaFinalizada">
+                <div class="col-md-10 offset-md-1">
+                    <div class="card input-full-width padding-25 ">
+                        <h4 class="my-orange" style="font-weight: 400;">Evaluación cliente</h4>
+                        <em>Escoge la opción más convenientes</em>
+
+                        <div class="card input-full-width margin-top-20">
+                            <div class="row">
+                                <div class="col-md-3 no-padding">
+                                    <div *ngFor="let item of jsonEvaluacion">
+                                        <div [ngClass]="item.Score >= 5 ? 'val-green': item.Score >= 3 ? 'val-yellow' : 'val-red'" class="cursor" (click)="showEvaluacion(item)"
+                                            style="display: flex;">
+                                            <mat-icon *ngIf="item.Score >= 5" style="margin: 10px 0 0px 10px;">star_rate</mat-icon>
+                                            <p style="margin: 10px 10px 10px 10px;display: flex;">{{item.Nombre}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-9" style="padding: 10px 0 20px 20px;">
+                                    <h4 class="input-full-width">Cobertura</h4>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <p class="txt-name">Minimo</p>
+                                            <p>{{v.Cobertura.RangoMin}}</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p class="txt-name">Máximo</p>
+                                            <p>{{v.Cobertura.RangoMax}}</p>
+                                        </div>
+                                        <div class="col-md-4" *ngIf="v.Cobertura.Cobertura">
+                                            <p class="txt-name">Porcentaje</p>
+                                            <p>{{v.Cobertura.Cobertura}}</p>
+                                        </div>
+                                        <div class="col-md-4" *ngIf="v.Cobertura.Cubre">
+                                            <p class="txt-name">Cubre</p>
+                                            <p>{{v.Cobertura.Cubre}}</p>
+                                        </div>
+                                    </div>
+                                    <h5 *ngIf="v.Cobertura.Porcentajes">Porcentajes</h5>
+                                    <div *ngFor="let x of v.Cobertura.Porcentajes" class="row">
+                                        <div class="col-md-4">
+                                            <p class="txt-name">Minimo</p>
+                                            <p>{{x.RangoMin}}</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p class="txt-name">Máximo</p>
+                                            <p>{{x.RangoMax}}</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p class="txt-name">% de cobertura</p>
+                                            <p>{{x.Cubre}}</p>
+                                        </div>
+                                    </div>
+                                    <h5>Comisión:
+                                        <span style="color:gray;">{{v.Comision}}%</span>
+                                    </h5>
+                                    <h5>Plazo de cuotas</h5>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="txt-name">Minimo</p>
+                                            <p>{{v.PlazoCuotas.Minimo}}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="txt-name">Máximo</p>
+                                            <p>{{v.PlazoCuotas.Maximo}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="v.Documentacion">
+                                        <h4 class="input-full-width">Documentos a adjuntar</h4>
+                                        <div *ngFor="let x of v.Documentacion" class="col-md-6">
+                                            <p class="val-documentacion">{{x}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-rigth">
+                                        <div class="float-right">
+                                            <button mat-button type="button" class="btn btn-green-fill btn-sm" style="margin-right: 20px;" (click)="dialogEvaluacion = !dialogEvaluacion">Seleccionar {{v.Nombre}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="tab == 2">
+            <div class="col-md-10 offset-md-1">
+                <div class="card input-full-width padding-25 ">
+                    <h4 class="my-orange" style="font-weight: 400;">Datos de Empresa</h4>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p class="txt-name">Nombre o razón social</p>
+                            <p class="txt-value">{{jsonEmpresa.nombre}}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="txt-name">Fecha de constitución</p>
+                            <p class="txt-value">{{jsonEmpresa.constitucion | date:'dd/MM/yyyy'}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="txt-name">Régimen tributario</p>
+                            <p class="txt-value">{{jsonEmpresa.regimen}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="txt-name">¿La empresa se encuentra formalizada?</p>
+                            <p class="txt-value">{{jsonEmpresa.formalidad ? 'Si' : 'No'}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="txt-name">Actividad económica</p>
+                            <p class="txt-value">{{jsonEmpresa.actividad}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="txt-name">Giro</p>
+                            <p class="txt-value">{{jsonEmpresa.giro}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="txt-name">Nivel de venta (en UF)</p>
+                            <p class="txt-value">{{formatNumber(jsonEmpresa.nivel)}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="txt-name">IVA automático (en UF)</p>
+                            <p class="txt-value">{{formatNumber(jsonEmpresa.iva)}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="txt-name">País</p>
+                            <p class="txt-value">{{jsonEmpresa.pais}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="txt-name">Correo electrónico</p>
+                            <p class="txt-value">{{jsonEmpresa.email}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="txt-name">Dirección</p>
+                            <p class="txt-value">{{jsonEmpresa.direccion}}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <p class="txt-name">Número</p>
+                            <p class="txt-value">{{jsonEmpresa.numero}}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <p class="txt-name">Oficina</p>
+                            <p class="txt-value">{{jsonEmpresa.oficina || '---'}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p class="txt-name">Comuna</p>
+                            <p class="txt-value">{{jsonEmpresa.comuna}}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="txt-name">Región</p>
+                            <p class="txt-value">{{jsonEmpresa.ciudad}}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="txt-name">Ciudad</p>
+                            <p class="txt-value">{{jsonEmpresa.region}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="txt-name">Teléfono</p>
+                            <p class="txt-value">{{jsonEmpresa.fono}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="txt-name">Celular</p>
+                            <p class="txt-value">{{jsonEmpresa.celular}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="tab == 3">
+            <div class="col-md-10 offset-md-1">
+                <div class="card input-full-width padding-25 ">
+                    <h4 class="my-orange" style="font-weight: 400;">Representante Legal</h4>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p class="txt-name">Rut</p>
+                            <p class="txt-value">{{jsonRepresentante.rut}}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="txt-name">Fecha de nacimiento</p>
+                            <p class="txt-value">{{jsonRepresentante.nacimiento | date:'dd/MM/yyyy'}}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="txt-name">Nacionalidad</p>
+                            <p class="txt-value">{{jsonRepresentante.nacionalidad}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p class="txt-name">Nombres</p>
+                            <p class="txt-value">{{jsonRepresentante.nombre}}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="txt-name">Apellido Paterno</p>
+                            <p class="txt-value">{{jsonRepresentante.paterno}}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="txt-name">Apellido Materno</p>
+                            <p class="txt-value">{{jsonRepresentante.materno}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="tab == 4">
+            <div class="col-md-10 offset-md-1">
+                <div class="card input-full-width padding-25 ">
+                    <h4 class="my-orange" style="font-weight: 400;">Socios de la empresa</h4>
+                    <div class="margin-top-20 dv-socio">
+                        <div class="row ">
+                            <div class="col-md-4">
+                                <p class="txt-name">Nombres</p>
+                                <p class="txt-value">Jarek</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="txt-name">Apellido paterno</p>
+                                <p class="txt-value">Castro</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="txt-name">Apellido materno</p>
+                                <p class="txt-value">Carvacho</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p class="txt-name">Porcentaje de participación</p>
+                                <p class="txt-value">20</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="txt-name">Dirección</p>
+                                <p class="txt-value">Padre Mariano 64</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="txt-name">Comuna</p>
+                                <p class="txt-value">Providencia</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="margin-top-20 dv-socio">
+                        <div class="row ">
+                            <div class="col-md-4">
+                                <p class="txt-name">Nombres</p>
+                                <p class="txt-value">Javier</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="txt-name">Apellido paterno</p>
+                                <p class="txt-value">Fernandez</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="txt-name">Apellido materno</p>
+                                <p class="txt-value">Amador</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p class="txt-name">Porcentaje de participación</p>
+                                <p class="txt-value">20</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="txt-name">Dirección</p>
+                                <p class="txt-value">Alvarez de Toledo 258</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="txt-name">Comuna</p>
+                                <p class="txt-value">San Miguel</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="tab == 5">
+            <div class="col-md-10 offset-md-1">
+                <div class="card input-full-width padding-25 ">
+                    <h4 class="my-orange" style="font-weight: 400;">Documentos de la empresa y socios</h4>
+                    <div class="row">
+                        <table class="table table-striped table-hover margin-top-20">
+                            <tr *ngFor="let item of jsonDocumentDefault">
+                                <td>
+                                    {{item.Filename}}
+                                </td>
+                                <td class="text-right">
+                                    <div class="button-row">
+                                        <button mat-mini-fab class="btn-green" (click)="downloadFile(item)">
+                                            <mat-icon>file_download</mat-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" [ngClass]="dialogEvaluacion? 'show-dialog':''" tabindex="-1" role="dialog" aria-hidden="true" style="background: #00000036;">
+    <div class="modal-dialog" role="document" style="margin-top: 170px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alerta</h5>
+                <button type="button" class="close" (click)="dialogEvaluacion = !dialogEvaluacion">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Estas seguro que deseas asignar la garantía al cliente?
+                <br>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary cursor" (click)="dialogEvaluacion = !dialogEvaluacion">Cancelar</button>
+                <button class="btn btn-success cursor" (click)="sendEvaluacion()">Enviar</button>
+            </div>
+        </div>
+    </div>
+</div>

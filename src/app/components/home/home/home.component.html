@@ -1,0 +1,70 @@
+<app-nav></app-nav>
+
+<section class="margin-top-80">
+    <div class="row">
+        <div class="col-lg-4 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header card-head-1">
+                    Invitar a un nuevo cliente
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <mat-form-field class="input-full-width">
+                            <input matInput placeholder="Nombre" required name="nombre">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-form-field class="input-full-width">
+                            <input matInput placeholder="Correo electrónico" type="email" required name="email">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-12 height-50">
+                        <div class="float-right">
+                            <button mat-button class="btn btn-green-fill btn-sm" disabled>Invitar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8 col-md-12 col-sm-12">
+            <div class="card input-full-width">
+                <div class="card-header card-head-1">
+                    Lista de clientes
+                </div>
+                <div class="card-body mat-elevation-z8">
+                    <div class="row">
+                        <mat-form-field class="input-full-width">
+                            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscador">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-table #table [dataSource]="dataSource" class="input-full-width">
+                            <ng-container matColumnDef="Razon">
+                                <mat-header-cell *matHeaderCellDef> Razon </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{element.Razon}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Rut">
+                                <mat-header-cell *matHeaderCellDef> Rut </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{element.Rut}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Titular">
+                                <mat-header-cell *matHeaderCellDef> Titular </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{element.Titular}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Contacto">
+                                <mat-header-cell *matHeaderCellDef> Contacto </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{element.Contacto}} </mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="goClient(row)" class="cursor"></mat-row>
+                        </mat-table>
+                    </div>
+                    <div class="row">
+                        <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]">
+                        </mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,14 @@
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { NavComponent } from './nav/nav.component';
+import { AuthGuard } from '../../guards/auth.guard';
+
+const routes: Routes = [
+    { path: '', component: NavComponent }
+];
+
+@NgModule({
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
+})
+export class NavRoutingModule { }

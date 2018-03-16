@@ -1,0 +1,95 @@
+.my-tab {
+    font-size: 17px;
+    padding: 10px 10px;
+    cursor: pointer;
+    border: 1px solid #e8e8e8;
+    margin: 2px;
+    color: #9e9e9e;
+}
+
+.my-tab:hover {
+    background-color: #e4e4e4;
+    color: #484848;
+}
+
+.my-tab-active {
+    border-bottom: 1px solid #585858;
+    color: #585858;
+    background: #efefef;
+}
+
+.my-tab div mat-icon {
+    vertical-align: middle;
+}
+
+.my-tab div {
+    margin: 3px 10px 3px 10px;
+}
+
+.txt-name {
+    color: gray;
+    font-size: 12px;
+    margin: 0;
+}
+
+.txt-value {
+    border-bottom: 1px dotted;
+}
+
+.dv-socio {
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 10px 0px 0 0;
+}
+
+.val-green {
+    color: #00b700;
+    border: 1px solid #00b700;
+    background-color: white;
+}
+
+.val-green:hover {
+    color: white;
+    border: 1px solid #00b700;
+    background-color: #00b700;
+}
+
+.val-yellow {
+    color: black;
+    border: 1px solid yellow;
+    background-color: white;
+}
+
+.val-yellow:hover {
+    color: black;
+    border: 1px solid yellow;
+    background-color: yellow;
+}
+
+.val-red {
+    color: red;
+    border: 1px solid red;
+    background-color: white;
+}
+
+.val-red:hover {
+    color: white;
+    border: 1px solid red;
+    background-color: red;
+}
+
+.val-documentacion {
+    font-size: 12px;
+    margin: 3px 0px;
+}
+
+.no-padding {
+    padding: 0px;
+}
+
+.btn-gray-fill {
+    border: 1px solid #3f3f3f !important;
+    background: #3f3f3f;
+    color: white !important;
+}
+
